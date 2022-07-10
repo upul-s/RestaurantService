@@ -32,8 +32,6 @@ public class RestaurantService {
         log.info("Updating the restaurant status");
 
     }
-
-
     private Restaurant verifyRestaurant(String name) throws NoSuchElementException {
         return restaurantRepository.findByName(name).orElseThrow(() ->
                 new NoSuchElementException("Restaurant not found with name:" + name));
