@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="unit-test-suite">
+
+    <test name="RestaurantServiceTest">
+        <classes>
+            <class name="com.jet.restaurants.service.restaurants.service.RestaurantServiceTest"/>
+        </classes>
+    </test>
+
+</suite>
