@@ -1,7 +1,6 @@
 package com.jet.restaurants.service.restaurants.domain;
 
 import lombok.*;
-import org.apache.kafka.common.protocol.types.Field;
 
 import javax.persistence.*;
 
