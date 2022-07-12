@@ -1,6 +1,12 @@
 version: "3.8"
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
 services:
   app:
+    container_name: restaurantservice
     build:
       context: .
     ports:
@@ -63,24 +69,29 @@ services:
     depends_on:
       - "kafka"
 
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: "monitoring-prometheus"
 
+  prometheus:
+    container_name: prometheus
+    #hostname: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
-      - '9090:9090'
+      - 9090:9090
 
   grafana:
-    image: grafana/grafana:latest
-    container_name: "monitoring-grafana"
-
-    depends_on:
-      - prometheus
-    links:
-      - prometheus
+    container_name: grafana
+    #hostname: grafana
+    image: grafana/grafana
+    volumes:
+      - ./grafana_datasources.yml:/etc/grafana/provisioning/datasources/all.yaml
+      - ./grafana_config.ini:/etc/grafana/config.ini
+      - grafana_data:/var/lib/grafana
     ports:
-      - "3000:3000"
-
+      - 3000:3000
 
 networks:
   default:
