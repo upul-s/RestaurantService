@@ -1,5 +1,6 @@
 package com.jet.restaurants.service.restaurants.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -19,10 +20,13 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class KafkaConfiguration {
+
+	@Value(value ="${jet.restaurant.kafka.server}")
+	private String kafkaServer;
 	@Bean
 	public KafkaAdmin admin() {
 		Map<String, Object> configs = new HashMap<>();
-		configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
+		configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
 		return new KafkaAdmin(configs);
 	}
 
@@ -30,7 +34,7 @@ public class KafkaConfiguration {
 	public Map<String, Object> consumerConfigs() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-				"kafka:9093");
+				kafkaServer);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
 				StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
